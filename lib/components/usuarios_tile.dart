@@ -134,9 +134,13 @@ class _UsuarioTileState extends State<UsuarioTile> {
                                 iconSize: 28),
                             IconButton(
                               onPressed: () {
-                                UsuarioProvider(principalCtrl)
-                                    .remover(usuario.id);
-                                setState(() {});
+                                if (snapshot.data!.length != 2) {
+                                  UsuarioProvider(principalCtrl)
+                                      .remover(usuario.id);
+                                  setState(() {});
+                                } else {
+                                  createAlertDialogUltimoUsuario(context);
+                                }
                               },
                               icon: const Icon(Icons.delete),
                               color: Colors.red,
@@ -177,5 +181,27 @@ class _UsuarioTileState extends State<UsuarioTile> {
         ),
       ),
     );
+  }
+
+  createAlertDialogUltimoUsuario(BuildContext context) {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Column(
+              children: const [
+                Text(
+                    "Você não pode excluir quando tem apenas um usuário cadastrado!",
+                    textAlign: TextAlign.center),
+                Divider(),
+                Text(
+                  "*Clique fora da borda branca para fechar",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 12),
+                ),
+              ],
+            ),
+          );
+        });
   }
 }

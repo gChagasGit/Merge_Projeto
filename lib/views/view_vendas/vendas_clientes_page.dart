@@ -13,6 +13,7 @@ import '../../modelo/ItemVenda.dart';
 import '../../modelo/Venda.dart';
 import '../../provider/pdv/itensVendidosProvider.dart';
 import '../../provider/venda_relatorio/vendasProvider.dart';
+import '../../util/ConversorMoeda.dart';
 
 class VendasClientesPage extends StatefulWidget {
   //VendasClientes({Key? key}) : super(key: key);
@@ -47,7 +48,7 @@ class _VendasClientesPageState extends State<VendasClientesPage> {
 
     return Scaffold(
         appBar: AppBar(
-          title: Text("Vendas"),
+          title: Text("Relatório de vendas"),
         ),
         body:
             Consumer<VendasProvider>(builder: (_context, valueProvider, child) {
@@ -78,7 +79,7 @@ class _VendasClientesPageState extends State<VendasClientesPage> {
     return Container(
         alignment: Alignment.center,
         height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width * 0.15,
+        width: MediaQuery.of(context).size.width * 0.125,
         margin: EdgeInsets.fromLTRB(10, 10, 0, 10),
         padding: EdgeInsets.all(10),
         color: Colors.blueGrey[400],
@@ -421,16 +422,16 @@ class _VendasClientesPageState extends State<VendasClientesPage> {
                       )),
                   // const SizedBox(width: 20),
                   SizedBox(
-                      width: 60,
-                      child: Text(
-                        vendaAtual.valor.toStringAsFixed(2),
+                      width: 70,
+                      child: Text('R\$ '+ConversorMoeda.converterDoubleEmTexto(
+                        vendaAtual.valor.toStringAsFixed(2)),
                         textAlign: TextAlign.center,
                       )),
                   // const SizedBox(width: 20),
                   SizedBox(
                       width: 80,
-                      child: Text(
-                        vendaAtual.desconto.toStringAsFixed(2),
+                      child: Text('R\$ '+ConversorMoeda.converterDoubleEmTexto(
+                        vendaAtual.desconto.toStringAsFixed(2)),
                         textAlign: TextAlign.center,
                       )),
                   // const SizedBox(width: 20),
@@ -527,22 +528,22 @@ class _VendasClientesPageState extends State<VendasClientesPage> {
               DataCell(
                 Padding(
                   padding: const EdgeInsets.only(left: 10),
-                  child: Text("${itemVenda.produto.descricao}"),
+                  child: Text(itemVenda.produto.descricao),
                 ),
               ),
               DataCell(Padding(
                 padding: const EdgeInsets.only(left: 10),
-                child: Text(itemVenda.quantidadeVendida.toStringAsFixed(3)),
+                child: Text(ConversorMoeda.converterDoubleEmTexto(itemVenda.quantidadeVendida.toStringAsFixed(3))+'\n'+itemVenda.produto.unidade),
               )),
               DataCell(Padding(
                 padding: const EdgeInsets.only(left: 10),
-                child: Text(itemVenda.valorVendido.toStringAsFixed(2)),
+                child: Text('R\$ \n'+ConversorMoeda.converterDoubleEmTexto(itemVenda.valorVendido.toStringAsFixed(2))),
               )),
               DataCell(Padding(
                 padding: const EdgeInsets.only(left: 10),
-                child: Text(
+                child: Text('R\$ \n'+ConversorMoeda.converterDoubleEmTexto(
                     (itemVenda.quantidadeVendida * itemVenda.valorVendido)
-                        .toStringAsFixed(2)),
+                        .toStringAsFixed(2))),
               )),
             ]))
         .toList();

@@ -136,7 +136,7 @@ class _FrenteCaixaState extends State<FrenteCaixa> {
       return Container(
         alignment: Alignment.center,
         child: Text(
-            "Ponto de Venda - ${principalCtrl.usuarioCtrl.usuarioLogado.nome} - ${principalCtrl.caixaCrtl.caixa.id} | Cliente: Desconhecido"),
+            "Ponto de Venda"),
       );
     }
     return Row(
@@ -393,7 +393,7 @@ class _FrenteCaixaState extends State<FrenteCaixa> {
                   width: 80,
                   child: Text(
                     //valor total da linha de produtos
-                    'R\$ ${itensVendidosProvider.valorTotalDoItemVenda(itemVenda).toStringAsFixed(2)}',
+                    'R\$ ${ConversorMoeda.converterDoubleEmTexto(itensVendidosProvider.valorTotalDoItemVenda(itemVenda).toStringAsFixed(2))}',
                     textAlign: TextAlign.end,
                   )),
               const SizedBox(width: 40),

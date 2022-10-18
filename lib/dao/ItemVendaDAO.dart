@@ -72,7 +72,7 @@ class ItemVendaDAO implements Dao<ItemVenda> {
     
     await _db.BancoDadosConfig().then((conn) async {
       // String sql = "SELECT * FROM $_tabela WHERE $where";
-      String sql = "SELECT it.id, it.quantidadeVendida, it.valorVendido, p.cod, p.descricao FROM itemvenda AS it, produto AS p WHERE $where AND it.fkIdProduto = p.id ORDER BY it.id DESC";
+      String sql = "SELECT it.id, it.quantidadeVendida, it.valorVendido, p.cod, p.descricao, p.unidade FROM itemvenda AS it, produto AS p WHERE $where AND it.fkIdProduto = p.id ORDER BY it.id DESC";
       await conn.query(sql).then((value) {
         results = toMap(value);
         return results;
@@ -116,6 +116,7 @@ class ItemVendaDAO implements Dao<ItemVenda> {
       Produto prod = Produto();
       prod.cod = v[3];
       prod.descricao = v[4];
+      prod.unidade = v[5];
       Venda vend = Venda();
       // vend.id = v[4];
       ItemVenda iv = ItemVenda.DAO(v[0], v[1], v[2], prod, vend);

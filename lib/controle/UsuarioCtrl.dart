@@ -37,6 +37,7 @@ class UsuarioCtrl {
   }
 
   Future<void> alterarUsuario(Usuario usuario) async {
+    usuario.senha = textToSHA256(usuario.senha);
     await _usuarioDAO.alterar(usuario);
   }
 

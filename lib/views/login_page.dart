@@ -107,7 +107,7 @@ class LoginPage extends StatelessWidget {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: const Text(
-          "Tela de Autenticação",
+          "Mercado Carneiro - Tela de Autenticação",
           style: TextStyle(
             fontSize: 18,
             color: Colors.white,
@@ -165,6 +165,8 @@ class LoginPage extends StatelessWidget {
                       if (login) {
                         limpar();
                         principalCtrl.routeHomePage(context);
+                      }else{
+                        createAlertDialogCredenciais(context);
                       }
                     }
                   },

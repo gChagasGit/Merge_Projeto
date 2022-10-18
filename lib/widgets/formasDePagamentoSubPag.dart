@@ -13,6 +13,7 @@ import 'package:flutter_teste_msql1/provider/pdv/formasDePagamentoProvider.dart'
 import 'package:flutter_teste_msql1/provider/pdv/itensVendidosProvider.dart';
 import 'package:flutter_teste_msql1/util/PDF/modelo_pdf/client.dart';
 import 'package:flutter_teste_msql1/util/PDF/modelo_pdf/invoice.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 import '../controle/FormaDePagamentoCtrl.dart';
@@ -472,8 +473,8 @@ listViewComAsFormasDePagamento(
       bool _permiteVariasPacelas =
           (pagamentoAtual.tipoPagamento.id == FormaDePagamentoCtrl.CREDITO);
 
-      _valorSubPagamentoController.text =
-          pagamentoAtual.valor.toStringAsFixed(2);
+      _valorSubPagamentoController.text = ConversorMoeda.converterDoubleEmTexto(
+          pagamentoAtual.valor.toStringAsFixed(2));
       _numeroPacelasController.text = pagamentoAtual.numParcelas.toString();
       return Container(
         height: 50,
@@ -499,7 +500,10 @@ listViewComAsFormasDePagamento(
                   controller: _valorSubPagamentoController,
                   textAlignVertical: TextAlignVertical.bottom,
                   textAlign: TextAlign.end,
-                  inputFormatters: [LengthLimitingTextInputFormatter(8)],
+                  inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly,
+                      CentavosInputFormatter()
+                    ],
                   decoration: const InputDecoration(
                     hintText: "0,00",
                     prefix: Text("R\$"),
@@ -510,8 +514,9 @@ listViewComAsFormasDePagamento(
                   },
                   onEditingComplete: () {
                     if (_valorSubPagamentoController.text.isNotEmpty) {
-                      double valor = _converterTextoEmDouble(
-                          _valorSubPagamentoController.text);
+                      double valor = double.parse(GetUtils.numericOnly(
+                                      _valorSubPagamentoController.text)) /
+                                  100;
                       pagamentoAtual.valor = valor;
                       formasDePagamentoProvider.atualizarValor();
                     }

@@ -50,7 +50,7 @@ class _PagamentosPrazoPageState extends State<PagamentosPrazoPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Vendas com pagamento à prazo"),
+        title: Text("Vendas com pagamento a prazo"),
         leading: BackButton(
           onPressed: () {
             limpar();

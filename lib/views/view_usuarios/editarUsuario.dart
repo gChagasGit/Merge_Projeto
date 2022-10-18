@@ -12,6 +12,7 @@ import 'package:flutter_teste_msql1/modelo/Cliente.dart';
 import 'package:flutter_teste_msql1/modelo/Usuario.dart';
 import 'package:flutter_teste_msql1/provider/usuarioProvider.dart';
 import 'package:brasil_fields/brasil_fields.dart';
+import 'package:get/get.dart';
 
 import 'package:provider/provider.dart';
 
@@ -48,6 +49,7 @@ class _EditarUsuarioState extends State<EditarUsuario> {
     return TextFormField(
       autofocus: false,
       controller: _nome,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
       style: TextStyle(fontSize: 17),
       // keyboardType: TextInputType.name,
       //MASCARA PARA TEXTO
@@ -55,18 +57,12 @@ class _EditarUsuarioState extends State<EditarUsuario> {
         FilteringTextInputFormatter.allow(RegExp(r'^[a-zA-Z ]*$'))
       ],
       validator: (value) {
-        if (value!.trim().isEmpty || value == null) {
-          return "Informe o nome";
+        if (value!.length < 4) {
+          return "No mínimo insira 3 letras";
         }
-        if (value.trim().length <= 3) {
-          return "Nome muito pequeno. No min 3 letras";
-        }
-        return null;
       },
-      // onSaved: (value) => _formData['nome'] = value.toString(),
       decoration: const InputDecoration(
         labelText: "Nome:",
-        hintText: "Fulano da Silva",
         // prefixIcon: Icon(Icons.food_bank_outlined),
         border: OutlineInputBorder(),
       ),
@@ -78,6 +74,7 @@ class _EditarUsuarioState extends State<EditarUsuario> {
   Widget fieldCpf() {
     return TextFormField(
       controller: _cpf,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
       style: TextStyle(fontSize: 17),
       keyboardType: TextInputType.number,
       inputFormatters: [
@@ -85,19 +82,16 @@ class _EditarUsuarioState extends State<EditarUsuario> {
         CpfInputFormatter()
       ],
       validator: (value) {
-        if (value!.isEmpty) {
-          return "Informe o cpf";
+        if (value!.length < 14) {
+          return "Confira o CPF";
         }
-
-        if (value.length != 14) {
-          return "Cpf inválido";
+        if (!GetUtils.isCpf(value)) {
+          return "Confira o CPF";
         }
-        return null;
       },
-      // onSaved: (value) => _formData['cpf'] = value.toString(),
       decoration: const InputDecoration(
         labelText: "CPF:",
-        hintText: "099.999.999.99",
+        hintText: "000.000.000-00",
         // prefixIcon: Icon(Icons.food_bank_outlined),
         border: OutlineInputBorder(),
       ),
@@ -107,16 +101,16 @@ class _EditarUsuarioState extends State<EditarUsuario> {
   Widget fieldSenha() {
     return TextFormField(
       // Adicionar Mascaras, FAZER ISSO
+      autovalidateMode: AutovalidateMode.onUserInteraction,
       controller: _senha,
       obscureText: true,
       style: const TextStyle(fontSize: 17),
       keyboardType: TextInputType.visiblePassword, //Verificar Se mostra a senha
       // inputFormatters: [FilteringTextInputFormatter.singleLineFormatter],
       validator: (value) {
-        if (value!.isEmpty) {
-          return "Senha está vazia";
+        if (value!.length < 8) {
+          return "No mínimo insira 8 digitos";
         }
-        return null;
       },
       decoration: const InputDecoration(
         labelText: "Senha:",
@@ -130,15 +124,18 @@ class _EditarUsuarioState extends State<EditarUsuario> {
   Widget fieldSenhaConf() {
     return TextFormField(
       controller: _senhaConfirmacao,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
       obscureText: true,
       style: const TextStyle(fontSize: 17),
       keyboardType: TextInputType.visiblePassword, //Verificar Se mostra a senha
       // inputFormatters: [FilteringTextInputFormatter.singleLineFormatter],
       validator: (value) {
-        if (value!.isEmpty) {
-          return "Senha está vazia";
+        if (value!.length < 8) {
+          return "No mínimo insira 8 digitos";
         }
-        return null;
+        if (_senha.text.compareTo(_senhaConfirmacao.text) != 0) {
+          return "Senhas são diferentes";
+        }
       },
       decoration: const InputDecoration(
         labelText: "Confirme sua senha:",
@@ -149,16 +146,20 @@ class _EditarUsuarioState extends State<EditarUsuario> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    var snackBar;
-    Usuario usuarioM = ModalRoute.of(context)!.settings.arguments as Usuario;
+  _setUsuario(Usuario usuarioM) {
     _id.text = usuarioM.id.toString();
     _nome.text = usuarioM.nome;
     _cpf.text = usuarioM.cpf;
     _senha.text = usuarioM.senha;
     _senhaConfirmacao.text = usuarioM.senha;
     _status.text = usuarioM.status.toString();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    var snackBar;
+    Usuario usuarioM = ModalRoute.of(context)!.settings.arguments as Usuario;
+    _setUsuario(usuarioM);
 
     return Scaffold(
       appBar: AppBar(
@@ -166,12 +167,6 @@ class _EditarUsuarioState extends State<EditarUsuario> {
           "Editar Usuário",
           style: TextStyle(fontSize: 20),
         ),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.help),
-          )
-        ],
       ),
       body: Form(
         key: _form,
@@ -180,13 +175,13 @@ class _EditarUsuarioState extends State<EditarUsuario> {
             Row(
               children: [
                 Container(
-                  height: 50,
+                  height: 80,
                   width: 350,
                   margin: EdgeInsets.fromLTRB(370, 140, 0, 0),
                   child: fieldName(),
                 ),
                 Container(
-                  height: 50,
+                  height: 80,
                   width: 200,
                   margin: EdgeInsets.fromLTRB(20, 140, 0, 0),
                   child: fieldCpf(),
@@ -195,13 +190,13 @@ class _EditarUsuarioState extends State<EditarUsuario> {
             ),
             Row(children: [
               Container(
-                height: 50,
+                height: 80,
                 width: 250,
                 margin: EdgeInsets.fromLTRB(370, 40, 0, 0),
                 child: fieldSenha(),
               ),
               Container(
-                height: 50,
+                height: 80,
                 width: 250,
                 margin: EdgeInsets.fromLTRB(50, 40, 0, 0),
                 child: fieldSenhaConf(),
@@ -215,7 +210,9 @@ class _EditarUsuarioState extends State<EditarUsuario> {
                   width: 200,
                   margin: EdgeInsets.fromLTRB(410, 50, 100, 0),
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      _setUsuario(usuarioM);
+                    },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: const [
@@ -238,7 +235,15 @@ class _EditarUsuarioState extends State<EditarUsuario> {
                   margin: EdgeInsets.fromLTRB(0, 50, 0, 0),
                   child: ElevatedButton(
                     onPressed: () async {
-                      final isValid = _form.currentState!.validate();
+                      bool isValid = false;
+                      if (_form.currentState!.validate() &&
+                          GetUtils.isCpf(_cpf.text)) {
+                        isValid = true;
+                      } else {
+                        _setUsuario(usuarioM);
+                        createAlertDialogCamposPreenchidosIncorretamete(
+                            context);
+                      }
                       if (isValid && (_senha.text == _senhaConfirmacao.text)) {
                         // print(_senha.text);
                         // print(_senhaConfirmacao.text);
@@ -280,5 +285,26 @@ class _EditarUsuarioState extends State<EditarUsuario> {
         ),
       ),
     );
+  }
+
+  createAlertDialogCamposPreenchidosIncorretamete(BuildContext context) {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Column(
+              children: const [
+                Text("Confira os campos de entrada!",
+                    textAlign: TextAlign.center),
+                Divider(),
+                Text(
+                  "*Clique fora da borda branca para fechar",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 12),
+                ),
+              ],
+            ),
+          );
+        });
   }
 }

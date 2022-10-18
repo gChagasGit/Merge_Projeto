@@ -104,7 +104,7 @@ class _ClienteTileState extends State<ClienteTile> {
                 itemCount: snapshot.data!.length,
                 itemBuilder: (context, i) {
                   final Cliente cliente = snapshot.data![i];
-                  if (cliente.status) {
+                  if (cliente.id != 1) {
                     return ListTile(
                       leading: avatar,
                       title: Row(

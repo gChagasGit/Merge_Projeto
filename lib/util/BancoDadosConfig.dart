@@ -11,7 +11,11 @@ class MySql {
     // Open a connection (testdb should already exist)
     MySqlConnection conn;
     conn = await MySqlConnection.connect(ConnectionSettings(
-        host: 'localhost', port: 3306, user: 'root', db: 'pdv_projeto_teste'));
+        host: 'localhost',
+        port: 3306,
+        user: 'root',
+        db: 'pdv_projeto_teste',
+        password: 'admin'));
     return conn;
   }
   /*

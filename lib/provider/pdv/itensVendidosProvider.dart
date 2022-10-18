@@ -31,7 +31,7 @@ class ItensVendidosProvider extends ChangeNotifier {
       {String? codigo, Produto? produtoSelecionado}) async {
     Produto _produto = Produto();
 
-    if (codigo![0] == '2') {
+    if (codigo != null && codigo[0] == '2') {
       codigo = _produtoPorPeso(codigo);
     }
 
@@ -43,14 +43,14 @@ class ItensVendidosProvider extends ChangeNotifier {
       _produto = produtoSelecionado!;
     }
     if (principalCtrl.produtoCtrl.produtos.isNotEmpty) {
-      if (_pesoString.isNotEmpty) {
+
+      if(_pesoString.isNotEmpty){
         mapPeso = {_produto.id: _pesoString};
       }
 
       ItemVenda _itemVenda = ItemVenda();
       Venda _venda = principalCtrl.vendaCtrl.venda;
-      _itemVenda.quantidadeVendida =
-          (_pesoString.isEmpty) ? 1 : double.parse(mapPeso[_produto.id]!);
+      _itemVenda.quantidadeVendida = (_pesoString.isEmpty)? 1 : double.parse(mapPeso[_produto.id]!);
       _itemVenda.valorVendido = _produto.valorVenda;
       _itemVenda.produto = _produto;
       _itemVenda.venda = _venda;
@@ -62,7 +62,7 @@ class ItensVendidosProvider extends ChangeNotifier {
 
   String _produtoPorPeso(String cod) {
     String cod_id = cod.substring(1, 7);
-    _pesoString = '${cod.substring(7, 9)}.${cod.substring(9, 12)}';
+    _pesoString = '${cod.substring(7,9)}.${cod.substring(9,12)}';
     return cod_id;
   }
 

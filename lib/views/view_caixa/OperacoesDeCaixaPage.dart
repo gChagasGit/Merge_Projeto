@@ -8,6 +8,8 @@ import 'package:number_paginator/number_paginator.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
+import '../../util/ConversorMoeda.dart';
+
 class OperacoesCaixaPage extends StatefulWidget {
   //OperacoesCaixaPage({Key? key}) : super(key: key);
 
@@ -287,42 +289,42 @@ class _OperacoesCaixaPageState extends State<OperacoesCaixaPage> {
             SizedBox(
               width: 150,
               child: Text(
-                'Dinheiro ${caixaAtual.valorTotalDinheiro}',
+                'Dinheiro R\$ ${ConversorMoeda.converterDoubleEmTexto(caixaAtual.valorTotalDinheiro.toStringAsFixed(2))}',
                 textAlign: TextAlign.start,
               ),
             ),
             SizedBox(
               width: 150,
               child: Text(
-                'Débito ${caixaAtual.valorTotalDebito}',
+                'Débito R\$ ${ConversorMoeda.converterDoubleEmTexto(caixaAtual.valorTotalDebito.toStringAsFixed(2))}',
                 textAlign: TextAlign.start,
               ),
             ),
             SizedBox(
               width: 150,
               child: Text(
-                'Crédito ${caixaAtual.valorTotalCredito}',
+                'Crédito R\$ ${ConversorMoeda.converterDoubleEmTexto(caixaAtual.valorTotalCredito.toStringAsFixed(2))}',
                 textAlign: TextAlign.start,
               ),
             ),
             SizedBox(
               width: 150,
               child: Text(
-                'PIX ${caixaAtual.valorTotalPix}',
+                'PIX R\$ ${ConversorMoeda.converterDoubleEmTexto(caixaAtual.valorTotalPix.toStringAsFixed(2))}',
                 textAlign: TextAlign.start,
               ),
             ),
             SizedBox(
               width: 150,
               child: Text(
-                'Prazo ${caixaAtual.valorTotalPrazo}',
+                'Prazo R\$ ${ConversorMoeda.converterDoubleEmTexto(caixaAtual.valorTotalPrazo.toStringAsFixed(2))}',
                 textAlign: TextAlign.start,
               ),
             ),
             SizedBox(
               width: 150,
               child: Text(
-                'Subtotal ${subTotalEntradaCaixa}',
+                'Total R\$ ${ConversorMoeda.converterDoubleEmTexto(subTotalEntradaCaixa.toStringAsFixed(2))}',
                 textAlign: TextAlign.start,
               ),
             ),
@@ -380,10 +382,14 @@ class _OperacoesCaixaPageState extends State<OperacoesCaixaPage> {
           ),
           SizedBox(
             width: 80,
-            child: Text(
-              caixaAtual.operacoes.last.valor.toStringAsFixed(2),
+            child: Text('R\$ '+ConversorMoeda.converterDoubleEmTexto(
+              caixaAtual.operacoes.last.valor.toStringAsFixed(2)),
               textAlign: TextAlign.center,
             ),
+          ),
+          SizedBox(
+            width: 20,
+            child: Text('|',textAlign: TextAlign.center,),
           ),
           SizedBox(
             width: 120,
@@ -402,14 +408,14 @@ class _OperacoesCaixaPageState extends State<OperacoesCaixaPage> {
           ),
           SizedBox(
             width: 80,
-            child: Text(
-              caixaAtual.operacoes.first.valor.toStringAsFixed(2),
+            child: Text('R\$ '+ConversorMoeda.converterDoubleEmTexto(
+              caixaAtual.operacoes.first.valor.toStringAsFixed(2)),
               textAlign: TextAlign.center,
             ),
           ),
           SizedBox(
             width: 120,
-            child: Text(
+            child: Text('Usuário: '+
               caixaAtual.operacoes.first.usuario.nome,
               overflow: TextOverflow.fade,
               textAlign: TextAlign.center,
