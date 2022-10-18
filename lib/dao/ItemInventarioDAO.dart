@@ -72,7 +72,7 @@ class ItemInventarioDAO implements Dao<ItemInventario> {
       // String sql = "SELECT * FROM $_tabela WHERE $where";
 
       String sql =
-          "select it.id, it.quantidade, i.id, p.id, p.cod, p.descricao from iteminventario as it, produto as p, inventario as i WHERE $where and p.id = it.fkIdProduto and it.fkIdInventario = i.id;";
+          "select it.id, it.quantidade, i.id, p.id, p.cod, p.descricao, p.quantidadeInventario, p.unidade from iteminventario as it, produto as p, inventario as i WHERE $where and p.id = it.fkIdProduto and it.fkIdInventario = i.id;";
       await conn.query(sql).then((value) {
         results = toMap(value);
         return results;
@@ -122,6 +122,8 @@ class ItemInventarioDAO implements Dao<ItemInventario> {
       produto.id = v[3];
       produto.cod = v[4];
       produto.descricao = v[5];
+      produto.quantidadeInventario = v[6];
+      produto.unidade = v[7];
       ItemInventario it = ItemInventario.DAO(v[0], v[1], inventario, produto);
       itensInventariados.add(it);
     }

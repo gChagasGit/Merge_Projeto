@@ -86,9 +86,9 @@ class _HomeInventarioState extends State<HomeInventario> {
                                   onTap: () {
                                     inventarioNovo = inventario;
                                   },
-                                  child: Text(
+                                  child: Text('#${inventario.id} | ${ 
                                       DateFormat("HH:mm dd/MM/yyyy")
-                                          .format(inventario.dataHora),
+                                          .format(inventario.dataHora)}',
                                       style: TextStyle(fontSize: 20)),
                                   // child: Text(DateFormat("HH:mm dd/MM/yyyy")
                                   //     .format(inventario.dataHora)),

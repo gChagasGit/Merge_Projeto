@@ -384,6 +384,7 @@ class _EditarProdutoState extends State<EditarProduto> {
                                     double.parse(_valorVenda.text),
                                     double.parse(_quantidadeAtual.text),
                                     double.parse(_quantidadeMinima.text),
+                                    produtoM.quantidadeInventario,
                                     unidadeProduto.toString(),
                                     true),
                                 context);

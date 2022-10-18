@@ -9,8 +9,10 @@ import 'package:flutter_teste_msql1/controle/UsuarioCtrl.dart';
 import 'package:flutter_teste_msql1/modelo/Inventario.dart';
 import 'package:flutter_teste_msql1/modelo/ItemInventario.dart';
 import 'package:flutter_teste_msql1/modelo/Usuario.dart';
+import 'package:flutter_teste_msql1/util/ConversorMoeda.dart';
+import 'package:intl/intl.dart';
 
-List<ItemInventario> itemInventario = [];
+List<ItemInventario> itensInventariados = [];
 Inventario inventarioModal = Inventario();
 Usuario usuario = Usuario();
 
@@ -22,9 +24,8 @@ class AcessarInventario extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            // title: Text(inventarioModal.id.toString()),
-            title: Text("Inventário: ${inventarioModal.dataHora.toString()}")),
-        // body: Text(inventarioModal.listaItensInventario!.first.produto.cod),
+            title: Text(
+                "Inventário: #${inventarioModal.id} | ${DateFormat("\'Dia: 'dd/MM/yyyy, 'às:' HH\'h':mm\'min'").format(inventarioModal.dataHora)}")),
         body: Container(
           width: 1100,
           margin: EdgeInsets.fromLTRB(80, 20, 0, 0),
@@ -40,7 +41,7 @@ class AcessarInventario extends StatelessWidget {
 
 geraLista(BuildContext context, PrincipalCtrl principalCtrl) async {
   inventarioModal = ModalRoute.of(context)!.settings.arguments as Inventario;
-  itemInventario = await principalCtrl.itemInventarioCtrl
+  itensInventariados = await principalCtrl.itemInventarioCtrl
       .buscarListaItensInventariadosPorInventario(inventarioModal.id);
   // itemInventario = await ItemInventarioCtrl()
   //     .buscarListaItensInventariadosPorInventario(inventarioModal.id);
@@ -104,8 +105,8 @@ _Columns() {
 
 _Rows(BuildContext context, PrincipalCtrl principalCtrl) {
   geraLista(context, principalCtrl);
-  // print("AQUIIIIII" + itemInventario[0].id.toString());
-  return itemInventario
+  print("AQUIIIIII  ${itensInventariados.length}");
+  return itensInventariados
       .map(
         (itemInventario) => DataRow(
           cells: <DataCell>[
@@ -133,8 +134,8 @@ _Rows(BuildContext context, PrincipalCtrl principalCtrl) {
               // Text(inventario.quantidade.toString()),
               Container(
                   margin: EdgeInsets.only(left: 90),
-                  child: Text(
-                      itemInventario.produto.quantidadeInventario.toString())),
+                  child: Text(ConversorMoeda.converterDoubleEmTexto(
+                      itemInventario.produto.quantidadeInventario.toStringAsFixed(3))+' '+itemInventario.produto.unidade)),
               // itemInventario.produto.quantidadeInventario.toString()
               // Text("R\$ ${produto.valorCompra.toString()}"),
             ),
@@ -142,7 +143,7 @@ _Rows(BuildContext context, PrincipalCtrl principalCtrl) {
               // Text(inventario.quantidade.toString()),
               Container(
                   margin: EdgeInsets.only(left: 40),
-                  child: Text(itemInventario.quantidade.toString())),
+                  child: Text(ConversorMoeda.converterDoubleEmTexto(itemInventario.quantidade.toStringAsFixed(3)+' '+itemInventario.produto.unidade))),
               // Text("R\$ ${produto.valorCompra.toString()}"),
             ),
             DataCell(

@@ -35,6 +35,7 @@ class Produto {
       this.valorVenda,
       this.quantidadeAtual,
       this.quantidadeMinima,
+      this.quantidadeInventario,
       this.unidade,
       this.status);
 
@@ -46,12 +47,13 @@ class Produto {
       required double valorVenda,
       required double quantidadeAtual,
       required double quantidadeMinima,
+      double? quantidadeInventario = 0,
       required String unidade,
       required bool status});
 
   @override
   String toString() {
     // TODO: implement toString
-    return "Produto: Cod.: $cod, Descrição: $descricao, Valor Venda: $valorVenda, Quant. Atual: $quantidadeAtual";
+    return "Produto: Cod.: $cod, Descrição: $descricao, Valor Venda: $valorVenda, Quant. Atual: $quantidadeAtual, Quant. Inventario: $quantidadeInventario";
   }
 }
